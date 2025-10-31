@@ -1,0 +1,116 @@
+# Compiled class files
+*.class
+
+# Log files
+*.log
+
+# BlueJ files
+*.ctxt
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# Virtual machine crash logs
+hs_err_pid*
+
+# Maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+
+# IDE
+.idea/
+*.iws
+*.iml
+*.ipr
+.vscode/
+.settings/
+.project
+.classpath
+
+# Test Output
+test-output/
+allure-results/
+screenshots/
+logs/
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# App files
+*.apk
+*.ipa
+*.app
+
+# BrowserStack Local
+BrowserStackLocal*
+
+# Temporary files
+*.tmp
+*.temp
+
+# Environment specific files
+local.properties
+browserstack.properties.local
+
+# Appium specific
+appium.log
+appium-server.log
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Mobile automation specific
+*.dmp
+*.dump
+*.dumpstream
+surefire-reports/
+failsafe-reports/
+
+# Extent Reports (keep structure but ignore generated files)
+test-output/extent-reports/*/
+test-output/cucumber-reports/*/
+test-output/screenshots/*/
+
+# Device/Emulator specific
+.android/
+*.keystore
+*.jks
+
+# Sensitive configuration files (uncomment if needed)
+# config/browserstack.properties
+# config/*-local.properties
+# config/credentials.properties
+
+# Backup files
+*.bak
+*.backup
+*~
+
+# Cache directories
+.cache/
+.gradle/
+.m2/repository/
