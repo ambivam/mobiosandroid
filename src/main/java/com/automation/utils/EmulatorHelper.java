@@ -192,6 +192,78 @@ public class EmulatorHelper {
     }
 
     /**
+     * Close/Stop all running emulators
+     */
+    public static void closeAllEmulators() {
+        System.out.println("🔄 Closing all running emulators...");
+        try {
+            // Get list of running emulators
+            Process listProcess = Runtime.getRuntime().exec("adb devices");
+            BufferedReader reader = new BufferedReader(new InputStreamReader(listProcess.getInputStream()));
+            
+            String line;
+            boolean hasEmulators = false;
+            while ((line = reader.readLine()) != null) {
+                if (line.contains("emulator") && line.contains("device")) {
+                    String emulatorId = line.split("\\s+")[0];
+                    System.out.println("📱 Closing emulator: " + emulatorId);
+                    
+                    // Send shutdown command to emulator
+                    Process shutdownProcess = Runtime.getRuntime().exec("adb -s " + emulatorId + " emu kill");
+                    shutdownProcess.waitFor();
+                    hasEmulators = true;
+                }
+            }
+            
+            if (hasEmulators) {
+                System.out.println("✅ All emulators closed successfully");
+                
+                // Wait a moment for emulators to fully close
+                Thread.sleep(2000);
+            } else {
+                System.out.println("ℹ️ No running emulators found");
+            }
+            
+        } catch (Exception e) {
+            System.out.println("⚠️ Error closing emulators: " + e.getMessage());
+            // Fallback: try to kill emulator processes
+            try {
+                System.out.println("🔄 Attempting to force close emulator processes...");
+                if (System.getProperty("os.name").toLowerCase().contains("windows")) {
+                    Runtime.getRuntime().exec("taskkill /f /im qemu-system-x86_64.exe");
+                    Runtime.getRuntime().exec("taskkill /f /im emulator.exe");
+                } else {
+                    Runtime.getRuntime().exec("pkill -f emulator");
+                    Runtime.getRuntime().exec("pkill -f qemu");
+                }
+                System.out.println("✅ Emulator processes terminated");
+            } catch (Exception ex) {
+                System.out.println("⚠️ Could not force close emulator processes: " + ex.getMessage());
+            }
+        }
+    }
+
+    /**
+     * Close specific emulator by device ID
+     */
+    public static void closeEmulator(String deviceId) {
+        System.out.println("🔄 Closing emulator: " + deviceId);
+        try {
+            Process process = Runtime.getRuntime().exec("adb -s " + deviceId + " emu kill");
+            process.waitFor();
+            
+            if (process.exitValue() == 0) {
+                System.out.println("✅ Emulator " + deviceId + " closed successfully");
+            } else {
+                System.out.println("⚠️ Failed to close emulator " + deviceId);
+            }
+            
+        } catch (Exception e) {
+            System.out.println("⚠️ Error closing emulator " + deviceId + ": " + e.getMessage());
+        }
+    }
+
+    /**
      * Provide setup instructions for emulator
      */
     public static void printEmulatorSetupInstructions() {

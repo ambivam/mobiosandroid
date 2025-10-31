@@ -6,11 +6,14 @@ This guide provides detailed instructions for executing QA App tests on emulator
 
 ### Local Emulator Execution
 ```bash
-# Basic execution (all tests)
+# Basic execution (all tests) - Emulator will auto-close after tests
 mvn clean test -Dtest=QAAppTestRunner -Dplatform=android -Dexecution.type=emulator
 
-# With specific tags
+# With specific tags - Emulator will auto-close after tests
 mvn clean test -Dtest=QAAppTestRunner -Dplatform=android -Dexecution.type=emulator -Dcucumber.filter.tags="@qa-app and @smoke"
+
+# Simple execution (uses emulator by default) - Emulator will auto-close
+mvn test -Dtest=QAAppTestRunner
 ```
 
 ### BrowserStack Execution
@@ -58,6 +61,28 @@ emulator -version
 emulator -list-avds
 
 # Should show: Pixel_7_API_33
+```
+
+## 🔧 Emulator Management
+
+### Automatic Emulator Lifecycle
+The framework now **automatically manages emulator lifecycle**:
+
+- **✅ Auto-Start**: Emulator starts automatically when tests begin
+- **✅ Auto-Close**: Emulator closes automatically when ALL tests complete
+- **✅ Cleanup**: All emulator processes are terminated after test suite
+
+### Manual Emulator Control (if needed)
+```bash
+# Start emulator manually (optional)
+emulator -avd Pixel_9a
+
+# Close all emulators manually
+adb devices | findstr emulator | adb -s <device-id> emu kill
+
+# Force close emulator processes (Windows)
+taskkill /f /im qemu-system-x86_64.exe
+taskkill /f /im emulator.exe
 ```
 
 ### Step-by-Step Execution

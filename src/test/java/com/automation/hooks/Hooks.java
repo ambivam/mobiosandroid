@@ -2,6 +2,7 @@ package com.automation.hooks;
 
 import com.automation.driver.DriverFactory;
 import com.automation.utils.ExtentReportManager;
+import com.automation.utils.EmulatorHelper;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.Scenario;
