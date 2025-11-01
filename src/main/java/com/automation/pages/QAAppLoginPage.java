@@ -41,8 +41,10 @@ public class QAAppLoginPage extends BasePage {
     @AndroidFindBy(id = "com.yourapp.qa:id/errorMessage")
     private WebElement errorMessage;
 
-    @AndroidFindBy(xpath = "//android.widget.TextView[contains(@text,'Welcome') or contains(@text,'Dashboard')]")
+    //@AndroidFindBy(xpath = "//android.widget.TextView[contains(@text,'Welcome') or contains(@text,'Dashboard')]")
+    @AndroidFindBy(xpath = "//android.widget.TextView[@resource-id=\"com.stratis.estaffing:id/subtitle\" and @text=\"Welcome to eStratis.\"]")
     private WebElement welcomeMessage;
+    
 
     // Loading indicator
     @AndroidFindBy(id = "com.yourapp.qa:id/loadingSpinner")
