@@ -15,13 +15,16 @@ import org.openqa.selenium.WebElement;
 public class QAAppLoginPage extends BasePage {
 
     // Login form elements - Update these locators based on your actual app
-    @AndroidFindBy(id = "com.yourapp.qa:id/username")
+    //@AndroidFindBy(id = "com.yourapp.qa:id/username")
+    @AndroidFindBy(id = "com.stratis.estaffing:id/userText")
     private WebElement usernameField;
 
-    @AndroidFindBy(id = "com.yourapp.qa:id/password") 
-    private WebElement passwordField;
+    //@AndroidFindBy(id = "com.yourapp.qa:id/password") 
+    @AndroidFindBy(id = "com.stratis.estaffing:id/passwordText")    
+    private WebElement passwordField;   
 
-    @AndroidFindBy(id = "com.yourapp.qa:id/loginButton")
+    //@AndroidFindBy(id = "com.yourapp.qa:id/loginButton")
+    @AndroidFindBy(id = "com.stratis.estaffing:id/text")
     private WebElement loginButton;
 
     // Alternative locators if IDs are not available

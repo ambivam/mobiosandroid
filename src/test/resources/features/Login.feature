@@ -9,7 +9,7 @@ Feature: User Login Functionality
 
   @smoke @positive
   Scenario: Successful login with valid credentials
-    When user logs in with username "testuser" and password "testpass"
+    When user logs in with username "rajanikanth.bathula@mystratis.com" and password "Notallowed@123"
     Then login should be successful
     And user should see welcome message
 
@@ -40,7 +40,7 @@ Feature: User Login Functionality
 
     Examples:
       | username  | password  | result     |
-      | testuser  | testpass  | successful |
-      | admin     | admin123  | successful |
+      | rajanikanth.bathula@mystratis.com  | Notallowed@123  | successful |
+      | rajanikanth.bathula@mystratis.com     | Notallowed@123  | successful |
       | user1     | wrongpass | fail       |
       | wronguser | testpass  | fail       |
