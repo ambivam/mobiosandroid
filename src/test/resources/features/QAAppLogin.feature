@@ -10,7 +10,7 @@ Feature: QA App Login Functionality
 
   @smoke @positive @high-priority
   Scenario: Successful login with valid credentials
-    When user logs in with username "testuser@qa.com" and password "Test123!"
+    When user logs in with username "rajanikanth.bathula@mystratis.com" and password "Notallowed@123"
     Then login should be successful
     And user should see welcome message
 
