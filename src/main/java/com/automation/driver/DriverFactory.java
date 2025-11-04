@@ -4,7 +4,9 @@ import com.automation.config.ConfigManager;
 import com.automation.utils.CapabilityPrinter;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.android.options.UiAutomator2Options;
 import io.appium.java_client.ios.IOSDriver;
+import io.appium.java_client.ios.options.XCUITestOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 import java.net.URL;
@@ -21,6 +23,8 @@ public class DriverFactory {
             
             if ("browserstack".equalsIgnoreCase(executionType)) {
                 driver = createBrowserStackDriver(platform, config);
+            } else if ("perfecto".equalsIgnoreCase(executionType)) {
+                driver = createPerfectoDriver(platform, config);
             } else if ("emulator".equalsIgnoreCase(executionType)) {
                 driver = createEmulatorDriver(platform, config);
             } else {
@@ -156,6 +160,68 @@ public class DriverFactory {
         }
         
         throw new RuntimeException("Unsupported platform: " + platform);
+    }
+
+    private static AppiumDriver createPerfectoDriver(String platform, ConfigManager config) throws Exception {
+        config.loadConfig("perfecto");
+        
+        // Perfecto cloud URL - Updated format
+        String cloudName = config.getProperty("perfecto.cloud.name");
+        String perfectoUrl = "https://" + cloudName + ".hub.perfectomobile.com/wd/hub";
+        
+        if ("android".equalsIgnoreCase(platform)) {
+            // Modern Android Perfecto capabilities using UiAutomator2Options
+            UiAutomator2Options options = new UiAutomator2Options();
+            
+            // Appium/W3C capabilities with appium: namespace
+            options.setCapability("appium:platformName", "Android");
+            options.setCapability("appium:automationName", "UiAutomator2");
+            options.setCapability("appium:deviceName", config.getProperty("perfecto.android.device.model"));
+            options.setCapability("appium:platformVersion", config.getProperty("perfecto.android.os.version"));
+            options.setCapability("appium:app", config.getProperty("perfecto.android.app.path"));
+            options.setCapability("appium:autoLaunch", true);
+            options.setCapability("appium:screenshotOnError", true);
+            options.setCapability("appium:takesScreenshot", true);
+            options.setCapability("appium:autoInstrumentation", true);
+            options.setCapability("appium:appPackage", config.getProperty("perfecto.android.app.package"));
+            
+            // Perfecto-specific capabilities with perfecto: namespace
+            options.setCapability("perfecto:securityToken", config.getProperty("perfecto.security.token"));
+            options.setCapability("perfecto:projectName", config.getProperty("perfecto.project"));
+            options.setCapability("perfecto:projectVersion", config.getProperty("perfecto.build"));
+            options.setCapability("perfecto:report.video", Boolean.parseBoolean(config.getProperty("perfecto.video", "true")));
+            options.setCapability("perfecto:report.debug", Boolean.parseBoolean(config.getProperty("perfecto.debug", "true")));
+            
+            System.out.println("🚀 Starting Android test on Perfecto Cloud with modern capabilities...");
+            return new AndroidDriver(new URL(perfectoUrl), options);
+            
+        } else if ("ios".equalsIgnoreCase(platform)) {
+            // Modern iOS Perfecto capabilities using XCUITestOptions
+            XCUITestOptions options = new XCUITestOptions();
+            
+            // Appium/W3C capabilities with appium: namespace
+            options.setCapability("appium:platformName", "iOS");
+            options.setCapability("appium:automationName", "XCUITest");
+            options.setCapability("appium:deviceName", config.getProperty("perfecto.ios.device.model"));
+            options.setCapability("appium:platformVersion", config.getProperty("perfecto.ios.os.version"));
+            options.setCapability("appium:app", config.getProperty("perfecto.ios.app.path"));
+            options.setCapability("appium:autoLaunch", true);
+            options.setCapability("appium:screenshotOnError", true);
+            options.setCapability("appium:takesScreenshot", true);
+            options.setCapability("appium:bundleId", config.getProperty("perfecto.ios.bundle.id"));
+            
+            // Perfecto-specific capabilities with perfecto: namespace
+            options.setCapability("perfecto:securityToken", config.getProperty("perfecto.security.token"));
+            options.setCapability("perfecto:projectName", config.getProperty("perfecto.project"));
+            options.setCapability("perfecto:projectVersion", config.getProperty("perfecto.build"));
+            options.setCapability("perfecto:report.video", Boolean.parseBoolean(config.getProperty("perfecto.video", "true")));
+            options.setCapability("perfecto:report.debug", Boolean.parseBoolean(config.getProperty("perfecto.debug", "true")));
+            
+            System.out.println("🚀 Starting iOS test on Perfecto Cloud with modern capabilities...");
+            return new IOSDriver(new URL(perfectoUrl), options);
+        }
+        
+        throw new RuntimeException("Unsupported platform for Perfecto: " + platform);
     }
 
     public static AppiumDriver getDriver() {

@@ -1,6 +1,7 @@
 package com.automation.pages;
 
 import io.appium.java_client.pagefactory.AndroidFindBy;
+import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 import org.openqa.selenium.WebElement;
 
 /**
@@ -14,17 +15,20 @@ import org.openqa.selenium.WebElement;
  */
 public class QAAppLoginPage extends BasePage {
 
-    // Login form elements - Update these locators based on your actual app
-    //@AndroidFindBy(id = "com.yourapp.qa:id/username")
+    // Login form elements - Cross-platform locators
+    // Username field
     @AndroidFindBy(id = "com.stratis.estaffing:id/userText")
+    @iOSXCUITFindBy(accessibility = "usernameField")
     private WebElement usernameField;
 
-    //@AndroidFindBy(id = "com.yourapp.qa:id/password") 
+    // Password field
     @AndroidFindBy(id = "com.stratis.estaffing:id/passwordText")    
+    @iOSXCUITFindBy(accessibility = "passwordField")
     private WebElement passwordField;   
 
-    //@AndroidFindBy(id = "com.yourapp.qa:id/loginButton")
+    // Login button
     @AndroidFindBy(id = "com.stratis.estaffing:id/text")
+    @iOSXCUITFindBy(accessibility = "loginButton")
     private WebElement loginButton;
 
     // Alternative locators if IDs are not available
@@ -39,10 +43,12 @@ public class QAAppLoginPage extends BasePage {
 
     // Error and success messages
     @AndroidFindBy(id = "com.yourapp.qa:id/errorMessage")
+    @iOSXCUITFindBy(accessibility = "errorMessage")
     private WebElement errorMessage;
 
-    //@AndroidFindBy(xpath = "//android.widget.TextView[contains(@text,'Welcome') or contains(@text,'Dashboard')]")
+    // Welcome message (success indicator)
     @AndroidFindBy(xpath = "//android.widget.TextView[@resource-id=\"com.stratis.estaffing:id/subtitle\" and @text=\"Welcome to eStratis.\"]")
+    @iOSXCUITFindBy(accessibility = "welcomeMessage")
     private WebElement welcomeMessage;
     
 

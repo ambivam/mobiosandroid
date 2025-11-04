@@ -28,6 +28,8 @@ public class ConfigManager {
                 return "src/test/resources/config/ios.properties";
             case "browserstack":
                 return "src/test/resources/config/browserstack.properties";
+            case "perfecto":
+                return "src/test/resources/config/perfecto.properties";
             default:
                 throw new RuntimeException("Unknown platform: " + platform);
         }

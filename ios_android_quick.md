@@ -5,27 +5,81 @@
 1. ✅ Perfecto Reportium dependency removed from `pom.xml`
 2. ✅ `UnifiedPerfectoSample.java` **deleted** (was causing compilation errors)
 3. ✅ `ModernUnifiedPerfectoSample.java` ready to use
-4. ✅ Clean compilation with no errors
+4. ✅ **NEW**: Cucumber BDD tests support both Android & iOS on Perfecto
+5. ✅ Clean compilation with no errors
 
 ```bash
-mvn clean test-compile # ✅ Perfect! Compiles 10 source files successfully
+mvn clean test-compile # ✅ Perfect! Compiles 13 source files successfully
 ```
 
-## 🚀 Quick Commands (Maven)
+## 🎯 **Two Testing Approaches Available**
 
-### Android Execution
+### **1. Direct Perfecto Tests** (Simple Java/TestNG)
+- Single comprehensive test per platform
+- Direct Appium automation
+- Console reporting
+
+### **2. Cucumber BDD Tests** (Behavior-Driven Development)
+- Multiple detailed scenarios from `QAAppLogin.feature`
+- Cross-platform support (same scenarios on Android & iOS)
+- Supports Perfecto, Emulator, and BrowserStack
+- Comprehensive reporting with Extent Reports
+
+---
+
+## 🚀 **Quick Commands**
+
+### **🎭 Cucumber BDD Tests (Recommended)**
+
+#### **Perfecto Cloud Execution:**
+```bash
+# Android on Perfecto Cloud
+mvn clean test -Dtest=UnifiedTestRunner -Dplatform=android -Dexecution.type=perfecto
+
+# iOS on Perfecto Cloud  
+mvn clean test -Dtest=UnifiedTestRunner -Dplatform=ios -Dexecution.type=perfecto
+
+# Dedicated runners (pre-configured)
+mvn clean test -Dtest=PerfectoAndroidTestRunner
+mvn clean test -Dtest=PerfectoiOSTestRunner
+```
+
+#### **Local Emulator:**
+```bash
+# Android emulator
+mvn clean test -Dtest=UnifiedTestRunner -Dplatform=android -Dexecution.type=emulator
+
+# Original QA App runner
+mvn clean test -Dtest=QAAppTestRunner
+```
+
+#### **Tag-Based Execution:**
+```bash
+# Smoke tests only
+mvn test -Dtest=UnifiedTestRunner -Dplatform=android -Dexecution.type=perfecto -Dcucumber.filter.tags="@smoke"
+
+# Regression tests
+mvn test -Dtest=UnifiedTestRunner -Dplatform=ios -Dexecution.type=perfecto -Dcucumber.filter.tags="@regression"
+
+# High priority tests
+mvn test -Dtest=UnifiedTestRunner -Dplatform=android -Dexecution.type=perfecto -Dcucumber.filter.tags="@high-priority"
+```
+
+### **⚡ Direct Perfecto Tests (Simple)**
+
+#### **Android Execution:**
 ```bash
 # Ready-to-use version (Works immediately)
 mvn clean test -Dtest=ModernUnifiedPerfectoSample -Dplatform=Android
 ```
 
-### iOS Execution
+#### **iOS Execution:**
 ```bash
 # Ready-to-use version (Works immediately)
 mvn clean test -Dtest=ModernUnifiedPerfectoSample -Dplatform=iOS
 ```
 
-### Both Platforms (Sequential)
+#### **Both Platforms (Sequential):**
 ```bash
 # Run Android first, then iOS
 mvn clean test -Dtest=ModernUnifiedPerfectoSample -Dplatform=Android && mvn clean test -Dtest=ModernUnifiedPerfectoSample -Dplatform=iOS
@@ -34,14 +88,36 @@ mvn clean test -Dtest=ModernUnifiedPerfectoSample -Dplatform=Android && mvn clea
 ---
 
 ## ⚡ **Framework Status: READY**
-- **Compilation**: ✅ ModernUnifiedPerfectoSample ready to use
-- **Configuration**: ✅ Centralized platform config
+- **Compilation**: ✅ Both test approaches ready to use
+- **Configuration**: ✅ Centralized platform config + Perfecto properties
 - **Cross-platform**: ✅ Single codebase for both platforms
-- **Dependencies**: ✅ Fixed - Perfecto Reportium dependency removed
+- **BDD Support**: ✅ Cucumber tests work on Android & iOS
+- **Multiple Environments**: ✅ Perfecto, Emulator, BrowserStack
+- **Dependencies**: ✅ All compilation issues resolved
 - **Ready to run**: ✅ Just need your Perfecto credentials
 
-## ⚠️ **Important Note**
-The `UnifiedPerfectoSample.java` requires Perfecto Reportium SDK which isn't publicly available. Use `ModernUnifiedPerfectoSample.java` instead - it provides the same functionality with simplified console reporting.
+## 📋 **Available Test Scenarios (Cucumber BDD)**
+
+Your `QAAppLogin.feature` contains **10+ test scenarios** that now run on both platforms:
+
+### **🚀 Smoke Tests (@smoke)**
+- ✅ Successful login with valid credentials
+- ✅ Failed login with invalid username  
+- ✅ Failed login with invalid password
+
+### **🔄 Regression Tests (@regression)**
+- ✅ Empty username validation
+- ✅ Empty password validation
+- ✅ Multiple login attempts
+- ✅ Login form field validation
+- ✅ Forgot password functionality
+
+### **🎨 UI Tests (@ui)**
+- ✅ Login with different credential combinations
+- ✅ Accessibility validation
+
+### **⚡ Performance Tests (@performance)**
+- ✅ Login page load time validation
 
 ---
 
@@ -66,15 +142,34 @@ dir src\test\java\com\perfecto\sample\
 
 ### Step 1: Configure Your Credentials
 
-#### Update Cloud Configuration
-Edit `ModernUnifiedPerfectoSample.java` (or `UnifiedPerfectoSample.java`):
-```java
-// CONFIGURATION: Replace with your Perfecto cloud details
-private static final String CLOUD_NAME = "demo"; // Your cloud name (e.g., "demo" for demo.perfectomobile.com)
-private static final String SECURITY_TOKEN = "your-security-token-here"; // Your actual security token
+#### **For Cucumber BDD Tests (Recommended):**
+Edit `src/test/resources/config/perfecto.properties`:
+```properties
+# Your Perfecto Cloud Details
+perfecto.cloud.name=your-cloud-name
+perfecto.security.token=your-security-token-here
+
+# Android App Configuration
+perfecto.android.device.model=Galaxy S.*|Pixel.*
+perfecto.android.os.version=13
+perfecto.android.app.path=PRIVATE:apps/app-V1.14.10-QA.apk
+perfecto.android.app.package=com.yourcompany.qaapp
+
+# iOS App Configuration  
+perfecto.ios.device.model=iPhone.*
+perfecto.ios.os.version=16
+perfecto.ios.app.path=PRIVATE:apps/eStratis.ipa
+perfecto.ios.bundle.id=com.yourcompany.qaapp
 ```
 
-#### Update Platform Configuration
+#### **For Direct Perfecto Tests:**
+Edit `ModernUnifiedPerfectoSample.java`:
+```java
+// CONFIGURATION: Replace with your Perfecto cloud details
+private static final String CLOUD_NAME = "your-cloud-name";
+private static final String SECURITY_TOKEN = "your-security-token-here";
+```
+
 Edit `PlatformConfig.java`:
 ```java
 // App paths - Update these paths according to your uploaded apps
@@ -84,63 +179,57 @@ public static final String IOS_APP_PATH = "PRIVATE:apps/eStratis.ipa";
 // App identifiers - Update these according to your app's package/bundle ID
 public static final String ANDROID_APP_PACKAGE = "com.yourcompany.yourapp";
 public static final String IOS_BUNDLE_ID = "com.yourcompany.yourapp";
-
-// Test credentials - Update with your test account
-public static final String TEST_EMAIL = "test@yourcompany.com";
-public static final String TEST_PASSWORD = "your-test-password";
 ```
 
-### Step 2: Choose Your Test Version
+### Step 2: Choose Your Testing Approach
 
-#### Option A: Modern Version (Recommended for beginners)
+#### **Option A: Cucumber BDD Tests (Recommended)**
+- **Files**: `UnifiedTestRunner.java`, `QAAppLogin.feature`
+- **Features**: 
+  - 10+ detailed test scenarios
+  - Cross-platform support (Android & iOS)
+  - Multiple execution environments (Perfecto, Emulator, BrowserStack)
+  - Tag-based execution (@smoke, @regression, etc.)
+  - Comprehensive Extent Reports
+- **Best for**: Comprehensive testing, BDD approach, cross-platform validation
+
+#### **Option B: Direct Perfecto Tests (Simple)**
 - **File**: `ModernUnifiedPerfectoSample.java`
-- **Features**: Simple console output, modern WebElement API
-- **Best for**: Learning, quick testing, development
+- **Features**: 
+  - Single comprehensive test per platform
+  - Simple console output
+  - Modern WebElement API
+  - Quick execution
+- **Best for**: Quick validation, learning, development testing
 
-#### Option B: Advanced Version (For production)
-- **File**: `UnifiedPerfectoSample.java`
-- **Features**: Full Perfecto Reportium integration, detailed reports
-- **Best for**: Production environments, comprehensive reporting
+### Step 3: Execute Tests
 
-### Step 3: Set Platform in Code
-
-Edit your chosen test file and set the platform:
-```java
-// CONFIGURATION: Change this to "Android" or "iOS"
-private static final String PLATFORM = "Android"; // or "iOS"
-```
-
-### Step 4: Execute Tests
-
-#### Android Tests
+#### **Cucumber BDD Tests (Recommended):**
 ```bash
 # Navigate to project directory
 cd C:\perfecto_mobileautomation
 
-# Compile project first
-mvn clean compile
+# Android on Perfecto
+mvn clean test -Dtest=UnifiedTestRunner -Dplatform=android -Dexecution.type=perfecto
 
-# Run Android tests (Modern version)
-mvn test -Dtest=ModernUnifiedPerfectoSample
+# iOS on Perfecto
+mvn clean test -Dtest=UnifiedTestRunner -Dplatform=ios -Dexecution.type=perfecto
 
-# Run Android tests (Advanced version)
-mvn test -Dtest=UnifiedPerfectoSample
+# Android Emulator (local)
+mvn clean test -Dtest=UnifiedTestRunner -Dplatform=android -Dexecution.type=emulator
+
+# Smoke tests only
+mvn test -Dtest=UnifiedTestRunner -Dplatform=android -Dexecution.type=perfecto -Dcucumber.filter.tags="@smoke"
 ```
 
-#### iOS Tests
-1. **Change platform in code**:
-   ```java
-   private static final String PLATFORM = "iOS";
-   ```
+#### **Direct Perfecto Tests:**
+```bash
+# Android tests
+mvn clean test -Dtest=ModernUnifiedPerfectoSample -Dplatform=Android
 
-2. **Run iOS tests**:
-   ```bash
-   # Modern version
-   mvn test -Dtest=ModernUnifiedPerfectoSample
-   
-   # Advanced version
-   mvn test -Dtest=UnifiedPerfectoSample
-   ```
+# iOS tests
+mvn clean test -Dtest=ModernUnifiedPerfectoSample -Dplatform=iOS
+```
 
 ---
 
@@ -342,4 +431,26 @@ Check the error message and refer to troubleshooting section above.
 
 ---
 
-**Remember**: Start with the Modern version (`ModernUnifiedPerfectoSample.java`) for easier setup and learning. Move to Advanced version (`UnifiedPerfectoSample.java`) when you need comprehensive reporting features.
+## 🎉 **Summary**
+
+You now have **two powerful testing approaches**:
+
+### **🎭 Cucumber BDD Tests (Recommended)**
+- **Same scenarios** run on both Android and iOS
+- **10+ test scenarios** from `QAAppLogin.feature`
+- **Multiple environments**: Perfecto, Emulator, BrowserStack
+- **Tag-based execution**: @smoke, @regression, @ui, @performance
+- **Comprehensive reporting** with Extent Reports
+
+### **⚡ Direct Perfecto Tests**
+- **Quick validation** with single comprehensive test
+- **Simple setup** and execution
+- **Console reporting** for immediate feedback
+- **Modern WebElement API** compatibility
+
+### **📚 Additional Resources:**
+- **`cucumber_perfecto_guide.md`** - Comprehensive BDD testing guide
+- **`ios_android_instructions.md`** - Detailed framework documentation
+- **`QAAppLogin.feature`** - All available test scenarios
+
+**Recommendation**: Start with **Cucumber BDD tests** for comprehensive cross-platform validation. Use **Direct Perfecto tests** for quick development feedback.
