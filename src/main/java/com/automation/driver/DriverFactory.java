@@ -165,18 +165,21 @@ public class DriverFactory {
     private static AppiumDriver createPerfectoDriver(String platform, ConfigManager config) throws Exception {
         config.loadConfig("perfecto");
         
-        // Perfecto cloud URL - Updated format
-        String cloudName = config.getProperty("perfecto.cloud.name");
-        String perfectoUrl = "https://" + cloudName + ".hub.perfectomobile.com/wd/hub";
+        // Get Perfecto URL from properties (supports variable substitution)
+        String perfectoUrl = config.getProperty("perfecto.url");
+        
+        // Log the exact URL being used for debugging
+        System.out.println("🔗 Perfecto Hub URL: " + perfectoUrl);
+        System.out.println("🔑 Security Token: " + config.getProperty("perfecto.security.token").substring(0, 20) + "...");
         
         if ("android".equalsIgnoreCase(platform)) {
             // Modern Android Perfecto capabilities using UiAutomator2Options
             UiAutomator2Options options = new UiAutomator2Options();
             
-            // Appium/W3C capabilities with appium: namespace
-            options.setCapability("appium:platformName", "Android");
+            // Standard W3C capabilities (no namespace prefix)
+            options.setCapability("platformName", "Android");
             options.setCapability("appium:automationName", "UiAutomator2");
-            options.setCapability("appium:deviceName", config.getProperty("perfecto.android.device.model"));
+            options.setCapability("appium:deviceName", config.getProperty("perfecto.android.device.id"));
             options.setCapability("appium:platformVersion", config.getProperty("perfecto.android.os.version"));
             options.setCapability("appium:app", config.getProperty("perfecto.android.app.path"));
             options.setCapability("appium:autoLaunch", true);
@@ -199,8 +202,8 @@ public class DriverFactory {
             // Modern iOS Perfecto capabilities using XCUITestOptions
             XCUITestOptions options = new XCUITestOptions();
             
-            // Appium/W3C capabilities with appium: namespace
-            options.setCapability("appium:platformName", "iOS");
+            // Standard W3C capabilities (no namespace prefix)
+            options.setCapability("platformName", "iOS");
             options.setCapability("appium:automationName", "XCUITest");
             options.setCapability("appium:deviceName", config.getProperty("perfecto.ios.device.model"));
             options.setCapability("appium:platformVersion", config.getProperty("perfecto.ios.os.version"));

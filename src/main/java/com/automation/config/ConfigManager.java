@@ -40,7 +40,7 @@ public class ConfigManager {
         if (value == null) {
             throw new RuntimeException("Property not found: " + key);
         }
-        return value;
+        return resolveVariables(value);
     }
 
     public String getProperty(String key, String defaultValue) {
@@ -53,5 +53,41 @@ public class ConfigManager {
 
     public boolean getBooleanProperty(String key) {
         return Boolean.parseBoolean(getProperty(key));
+    }
+    
+    /**
+     * Resolves variables in property values using ${variable.name} syntax
+     */
+    private String resolveVariables(String value) {
+        if (value == null || !value.contains("${")) {
+            return value;
+        }
+        
+        String resolved = value;
+        int maxIterations = 10; // Prevent infinite loops
+        int iterations = 0;
+        
+        while (resolved.contains("${") && iterations < maxIterations) {
+            int start = resolved.indexOf("${");
+            int end = resolved.indexOf("}", start);
+            
+            if (end == -1) {
+                break; // Malformed variable reference
+            }
+            
+            String variableName = resolved.substring(start + 2, end);
+            String variableValue = properties.getProperty(variableName);
+            
+            if (variableValue != null) {
+                resolved = resolved.substring(0, start) + variableValue + resolved.substring(end + 1);
+            } else {
+                // Variable not found, leave as is
+                break;
+            }
+            
+            iterations++;
+        }
+        
+        return resolved;
     }
 }
