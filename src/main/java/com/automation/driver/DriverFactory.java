@@ -14,9 +14,13 @@ import java.time.Duration;
 
 public class DriverFactory {
     private static AppiumDriver driver;
+    private static String currentExecutionType;
 
     public static void createDriver(String platform, String executionType) {
         try {
+            // Store execution type for cleanup
+            currentExecutionType = executionType;
+            
             ConfigManager config = new ConfigManager();
             
             System.out.println("Creating driver for platform: " + platform + ", execution: " + executionType);
@@ -238,9 +242,65 @@ public class DriverFactory {
 
     public static void quitDriver() {
         if (driver != null) {
-            driver.quit();
-            driver = null;
-            System.out.println("Driver quit successfully");
+            try {
+                // Execute Perfecto "Close device" command before quitting driver
+                if (currentExecutionType != null && "perfecto".equalsIgnoreCase(currentExecutionType)) {
+                    closeDevice();
+                }
+            } catch (Exception e) {
+                System.out.println("Warning: Failed to close device properly: " + e.getMessage());
+            } finally {
+                driver.quit();
+                driver = null;
+                System.out.println("Driver quit successfully");
+            }
+        }
+    }
+    
+    /**
+     * Executes Perfecto "Close device" command to release the device back to default state
+     * This ensures the device is properly cleaned up and available for other tests
+     */
+    private static void closeDevice() {
+        try {
+            System.out.println("🔄 Executing Perfecto 'Close device' command...");
+            
+            // Get device ID from capabilities
+            String deviceId = null;
+            if (driver.getCapabilities().getCapability("appium:deviceName") != null) {
+                deviceId = driver.getCapabilities().getCapability("appium:deviceName").toString();
+            }
+            
+            // Try different Perfecto close device command formats based on documentation
+            try {
+                // Method 1: Perfecto handset.closeDevice command (most common)
+                java.util.Map<String, Object> params = new java.util.HashMap<>();
+                params.put("handset.closeDevice", "");
+                driver.executeScript("mobile: handset.closeDevice", params);
+                System.out.println("✅ Device closed successfully using handset.closeDevice");
+                return;
+            } catch (Exception e1) {
+                System.out.println("Method 1 failed, trying alternative...");
+                
+                try {
+                    // Method 2: Perfecto close device with parameters
+                    java.util.Map<String, Object> params2 = new java.util.HashMap<>();
+                    params2.put("handset.closeDevice", "runScript=true");
+                    driver.executeScript("mobile: handset.closeDevice", params2);
+                    System.out.println("✅ Device closed successfully using handset.closeDevice with runScript");
+                    return;
+                } catch (Exception e2) {
+                    System.out.println("Method 2 failed, trying driver quit only...");
+                    
+                    // Method 3: Just log that we're relying on driver.quit()
+                    System.out.println("ℹ️ Using driver.quit() for device cleanup (Perfecto will handle device release)");
+                }
+            }
+            
+        } catch (Exception e) {
+            System.out.println("⚠️ All close device methods failed: " + e.getMessage());
+            System.out.println("ℹ️ Device will be released automatically by Perfecto after session timeout");
+            // Don't throw exception as this is cleanup - log and continue
         }
     }
 }
