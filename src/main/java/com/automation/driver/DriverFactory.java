@@ -219,6 +219,18 @@ public class DriverFactory {
             options.setCapability("appium:takesScreenshot", true);
             options.setCapability("appium:bundleId", config.getProperty("perfecto.ios.bundle.id"));
             
+            // iOS Alert and Permission Handling
+            // Handle App Tracking Transparency and other iOS permission dialogs automatically
+            // Set to true to accept alerts (tap "Allow"), false to dismiss alerts (tap "Ask App Not to Track")
+            boolean acceptAlerts = Boolean.parseBoolean(config.getProperty("perfecto.ios.accept.alerts", "false"));
+            if (acceptAlerts) {
+                options.setCapability("appium:autoAcceptAlerts", true);
+                System.out.println("🍎 iOS configured to AUTO-ACCEPT alerts (Allow tracking)");
+            } else {
+                options.setCapability("appium:autoDismissAlerts", true);
+                System.out.println("🍎 iOS configured to AUTO-DISMISS alerts (Ask App Not to Track)");
+            }
+            
             // Perfecto-specific capabilities with perfecto: namespace
             options.setCapability("perfecto:securityToken", config.getProperty("perfecto.security.token"));
             options.setCapability("perfecto:projectName", config.getProperty("perfecto.project"));
