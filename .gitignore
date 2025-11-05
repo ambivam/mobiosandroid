@@ -70,6 +70,7 @@ BrowserStackLocal*
 # Temporary files
 *.tmp
 *.temp
+output.txt
 
 # Environment specific files
 local.properties
