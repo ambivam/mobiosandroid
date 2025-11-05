@@ -1,0 +1,174 @@
+# Perfecto Android Device Capabilities
+# Key-Value pairs for Android automation on Perfecto Cloud
+# Copy these capabilities to your test framework or Appium configuration
+
+# ========================================
+# STANDARD W3C CAPABILITIES (No Prefix)
+# ========================================
+platformName=Android
+automationName=UiAutomator2
+deviceName=RFCX10CKNMX
+platformVersion=14
+app=PRIVATE:app-V1.14.10-QA.apk
+autoLaunch=true
+screenshotOnError=true
+takesScreenshot=true
+autoInstrumentation=true
+appPackage=com.stratis.estaffing
+
+# ========================================
+# APPIUM-SPECIFIC CAPABILITIES (appium: prefix)
+# ========================================
+appium:automationName=UiAutomator2
+appium:deviceName=RFCX10CKNMX
+appium:platformVersion=14
+appium:app=PRIVATE:app-V1.14.10-QA.apk
+appium:autoLaunch=true
+appium:screenshotOnError=true
+appium:takesScreenshot=true
+appium:autoInstrumentation=true
+appium:appPackage=com.stratis.estaffing
+appium:appActivity=com.stratis.estaffing.MainActivity
+appium:noReset=false
+appium:fullReset=false
+appium:newCommandTimeout=300
+appium:autoGrantPermissions=true
+appium:autoAcceptAlerts=false
+appium:autoDismissAlerts=false
+appium:unicodeKeyboard=true
+appium:resetKeyboard=true
+appium:skipUnlock=true
+appium:skipLogcatCapture=false
+appium:dontStopAppOnReset=false
+appium:recreateChromeDriverSessions=true
+
+# ========================================
+# PERFECTO-SPECIFIC CAPABILITIES (perfecto: prefix)
+# ========================================
+perfecto:securityToken=eyJhbGciOiJIUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJjOWNiZTdlNi1jN2U4LTQxYWItYTk4ZS1jODY5M2JiNTZkYTIifQ.eyJpYXQiOjE3NjIyODA4ODAsImp0aSI6IjlmY2M0MTllLWQ5NjctNDBhYi1iZWRkLTI1MTE0YTZkNjE4ZSIsImlzcyI6Imh0dHBzOi8vYXV0aDMucGVyZmVjdG9tb2JpbGUuY29tL2F1dGgvcmVhbG1zL3N0cmF0aXMtMS1wZXJmZWN0b21vYmlsZS1jb20iLCJhdWQiOiJodHRwczovL2F1dGgzLnBlcmZlY3RvbW9iaWxlLmNvbS9hdXRoL3JlYWxtcy9zdHJhdGlzLTEtcGVyZmVjdG9tb2JpbGUtY29tIiwic3ViIjoiYWM2OGQ0M2ItNDk0YS00YzRiLTk5ZmUtZWI4MzM3NTQ1ZmM0IiwidHlwIjoiT2ZmbGluZSIsImF6cCI6Im9mZmxpbmUtdG9rZW4tZ2VuZXJhdG9yIiwibm9uY2UiOiI3OGU5MTA3Ni01NmFjLTRkZGMtOWI3Mi1iN2U3OGQ4YzY2ZDIiLCJzZXNzaW9uX3N0YXRlIjoiY2YxNzFlM2EtYzQ1My00ZjZhLWExY2UtYjc4NjA4MDM2MjYyIiwic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBvZmZsaW5lX2FjY2VzcyBlbWFpbCIsInNpZCI6ImNmMTcxZTNhLWM0NTMtNGY2YS1hMWNlLWI3ODYwODAzNjI2MiJ9.z734HC1jiI3qx28vuOIDeA2wX05-sNHkOw-cvpfpEVg
+perfecto:projectName=QA App Cross-Platform Testing
+perfecto:projectVersion=Build_1.0
+perfecto:report.video=true
+perfecto:report.debug=true
+perfecto:report.network=true
+perfecto:enableAppiumBehavior=true
+perfecto:takesScreenshot=true
+perfecto:screenshotOnError=true
+perfecto:openDeviceTimeout=5
+
+# ========================================
+# DEVICE SELECTION CAPABILITIES
+# ========================================
+# Option 1: Specific Device ID (Recommended)
+deviceName=RFCX10CKNMX
+appium:deviceName=RFCX10CKNMX
+
+# Option 2: Device Model Selection (Alternative)
+# model=Galaxy S.*
+# manufacturer=Samsung
+
+# Option 3: OS Version Selection (Alternative)
+# osVersion=14
+# platformVersion=14
+
+# ========================================
+# NETWORK AND PERFORMANCE CAPABILITIES
+# ========================================
+perfecto:network.logs=true
+perfecto:network.capture=true
+perfecto:performance.logs=true
+perfecto:vitals=true
+
+# ========================================
+# DEBUGGING AND LOGGING CAPABILITIES
+# ========================================
+perfecto:report.debug=true
+perfecto:report.video=true
+perfecto:report.image=true
+perfecto:report.network=true
+perfecto:enableAppiumBehavior=true
+appium:skipLogcatCapture=false
+
+# ========================================
+# TIMEOUT CAPABILITIES
+# ========================================
+appium:newCommandTimeout=300
+perfecto:openDeviceTimeout=5
+perfecto:commandTimeout=60
+
+# ========================================
+# APP INSTALLATION AND MANAGEMENT
+# ========================================
+appium:app=PRIVATE:app-V1.14.10-QA.apk
+appium:appPackage=com.stratis.estaffing
+appium:appActivity=com.stratis.estaffing.MainActivity
+appium:autoLaunch=true
+appium:noReset=false
+appium:fullReset=false
+appium:dontStopAppOnReset=false
+
+# ========================================
+# PERMISSIONS AND ALERTS
+# ========================================
+appium:autoGrantPermissions=true
+appium:autoAcceptAlerts=false
+appium:autoDismissAlerts=false
+
+# ========================================
+# KEYBOARD AND INPUT CAPABILITIES
+# ========================================
+appium:unicodeKeyboard=true
+appium:resetKeyboard=true
+appium:skipUnlock=true
+
+# ========================================
+# CHROME DRIVER CAPABILITIES (for WebView testing)
+# ========================================
+appium:recreateChromeDriverSessions=true
+appium:chromeOptions={"w3c": false, "args": ["--disable-web-security", "--allow-running-insecure-content"]}
+
+# ========================================
+# EXAMPLE USAGE IN DIFFERENT FORMATS
+# ========================================
+
+# JSON Format Example:
+# {
+#   "platformName": "Android",
+#   "appium:automationName": "UiAutomator2",
+#   "appium:deviceName": "RFCX10CKNMX",
+#   "appium:platformVersion": "14",
+#   "appium:app": "PRIVATE:app-V1.14.10-QA.apk",
+#   "perfecto:securityToken": "YOUR_TOKEN_HERE",
+#   "perfecto:projectName": "QA App Cross-Platform Testing"
+# }
+
+# Java DesiredCapabilities Example:
+# DesiredCapabilities caps = new DesiredCapabilities();
+# caps.setCapability("platformName", "Android");
+# caps.setCapability("appium:automationName", "UiAutomator2");
+# caps.setCapability("appium:deviceName", "RFCX10CKNMX");
+# caps.setCapability("appium:platformVersion", "14");
+# caps.setCapability("appium:app", "PRIVATE:app-V1.14.10-QA.apk");
+# caps.setCapability("perfecto:securityToken", "YOUR_TOKEN_HERE");
+
+# Python Example:
+# desired_caps = {
+#     'platformName': 'Android',
+#     'appium:automationName': 'UiAutomator2',
+#     'appium:deviceName': 'RFCX10CKNMX',
+#     'appium:platformVersion': '14',
+#     'appium:app': 'PRIVATE:app-V1.14.10-QA.apk',
+#     'perfecto:securityToken': 'YOUR_TOKEN_HERE'
+# }
+
+# ========================================
+# NOTES AND BEST PRACTICES
+# ========================================
+# 1. Replace RFCX10CKNMX with your actual device ID from Perfecto portal
+# 2. Replace the security token with your actual Perfecto token
+# 3. Update app path to match your uploaded app in Perfecto repository
+# 4. Use specific device IDs for consistent test execution
+# 5. Enable video recording for debugging failed tests
+# 6. Set appropriate timeouts based on your app's loading time
+# 7. Use autoGrantPermissions=true to handle Android runtime permissions
+# 8. Enable network logs for API testing and debugging
