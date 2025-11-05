@@ -21,10 +21,18 @@ public class ExtentReportManager {
 
     public static void initializeReport() {
         if (extent == null) {
-            String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
-            String reportName = "TestReport_" + timestamp + ".html";
+            String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("d-MMM-yy_HH-mm-ss"));
+            String reportName = "ExtentReport_" + timestamp + ".html";
             
-            ExtentSparkReporter sparkReporter = new ExtentSparkReporter("test-output/extent-reports/" + reportName);
+            // Ensure the extent-reports directory exists
+            File reportDir = new File("test-output/extent-reports");
+            if (!reportDir.exists()) {
+                reportDir.mkdirs();
+                System.out.println("Created extent-reports directory: " + reportDir.getAbsolutePath());
+            }
+            
+            String reportPath = "test-output/extent-reports/" + reportName;
+            ExtentSparkReporter sparkReporter = new ExtentSparkReporter(reportPath);
             sparkReporter.config().setDocumentTitle("Mobile Test Report");
             sparkReporter.config().setReportName("Mobile Tests");
             sparkReporter.config().setTheme(Theme.STANDARD);
@@ -35,6 +43,7 @@ public class ExtentReportManager {
             extent.setSystemInfo("Platform", System.getProperty("platform", "Android"));
             extent.setSystemInfo("OS", System.getProperty("os.name"));
             
+            System.out.println("📊 Extent Report initialized: " + reportPath);
             System.out.println("Report initialized");
         }
     }
@@ -89,6 +98,7 @@ public class ExtentReportManager {
     public static void flushReport() {
         if (extent != null) {
             extent.flush();
+            System.out.println("📊 Extent Report saved to: test-output/extent-reports/");
             System.out.println("Report saved");
         }
     }
