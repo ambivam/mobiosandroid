@@ -26,6 +26,12 @@ public class UrlDebugTest {
             System.out.println("Android OS Version: " + config.getProperty("perfecto.android.os.version"));
             System.out.println("Android App Path: " + config.getProperty("perfecto.android.app.path"));
             
+            System.out.println("iOS Device ID: " + config.getProperty("perfecto.ios.device.id"));
+            System.out.println("iOS Device Model: " + config.getProperty("perfecto.ios.device.model"));
+            System.out.println("iOS Manufacturer: " + config.getProperty("perfecto.ios.manufacturer"));
+            System.out.println("iOS OS Version: " + config.getProperty("perfecto.ios.os.version"));
+            System.out.println("iOS App Path: " + config.getProperty("perfecto.ios.app.path"));
+            
         } catch (Exception e) {
             System.err.println("Error: " + e.getMessage());
             e.printStackTrace();

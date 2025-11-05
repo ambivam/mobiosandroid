@@ -204,9 +204,11 @@ public class DriverFactory {
             
             // Standard W3C capabilities (no namespace prefix)
             options.setCapability("platformName", "iOS");
-            options.setCapability("appium:automationName", "XCUITest");
-            options.setCapability("appium:deviceName", config.getProperty("perfecto.ios.device.model"));
+            options.setCapability("appium:automationName", "Appium");
+            options.setCapability("appium:deviceName", config.getProperty("perfecto.ios.device.id"));
             options.setCapability("appium:platformVersion", config.getProperty("perfecto.ios.os.version"));
+            options.setCapability("manufacturer", config.getProperty("perfecto.ios.manufacturer"));
+            options.setCapability("model", config.getProperty("perfecto.ios.device.model"));
             options.setCapability("appium:app", config.getProperty("perfecto.ios.app.path"));
             options.setCapability("appium:autoLaunch", true);
             options.setCapability("appium:screenshotOnError", true);
